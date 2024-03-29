@@ -3,6 +3,7 @@ package com.romashka.catviewer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
 import com.romashka.catviewer.domain.CatsRepository
 
@@ -32,9 +33,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        Glide.with(this).load("https://api.thecatapi.com/v1/images/search/").into(binding.imageView)
+
     }
-
-
-
 
 }
