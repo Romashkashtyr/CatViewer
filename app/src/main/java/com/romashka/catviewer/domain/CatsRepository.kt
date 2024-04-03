@@ -18,9 +18,11 @@ class CatsRepository: ViewModel() {
     val catData: LiveData<CatFactResponse>
         get() = _catData
 
-    val _catFact = MutableLiveData<CatFactResponse>()
-    val catFact: LiveData<CatFactResponse>
-        get() = _catFact
+    val _catImage = MutableLiveData<CatImage>()
+    val catImage: LiveData<CatImage>
+        get() = _catImage
+
+
 
     init {
         getCatsFactUseCase()
@@ -46,6 +48,24 @@ class CatsRepository: ViewModel() {
         return _catData
     }
 
+
+    fun loadRandomCatImage(): LiveData<CatImage>  {
+        val call = catApi.getCatImage()
+        call.enqueue(object : Callback<CatImage> {
+            override fun onResponse(call: Call<CatImage>, response: Response<CatImage>) {
+                if (response.isSuccessful) {
+                    _catImage.value = response.body()
+                    }
+                }
+
+            override fun onFailure(p0: Call<CatImage>, p1: Throwable) {
+                throw RuntimeException("${p1.message}")
+            }
+        })
+        return _catImage
+
+    }
+
     fun addToHistory(factResponse: CatFactResponse){
         catFactsHistory.add(factResponse)
 
@@ -61,8 +81,8 @@ class CatsRepository: ViewModel() {
 
     fun onRefreshImage(){}
 
-    fun onRefreshFact(newFact: CatFactResponse): String{
-        _catFact.value = newFact
-        return newFact.fact
-    }
+//    fun onRefreshFact(newFact: CatFactResponse): String{
+//        _catFact.value = newFact
+//        return newFact.fact
+//    }
 }

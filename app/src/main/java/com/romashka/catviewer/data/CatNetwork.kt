@@ -16,4 +16,12 @@ object CatNetwork {
     }
 
     val catFactApi: CatsApi = getInstance().create(CatsApi::class.java)
+
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.thecatapi.com/v1/images/search/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val catApiImage = retrofit.create(CatImageApi::class.java)
 }
