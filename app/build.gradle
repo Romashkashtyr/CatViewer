@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("com.google.devtools.ksp")
+
 }
 
 android {
@@ -56,6 +58,10 @@ dependencies {
 
     //Gson converter
     implementation 'com.squareup.retrofit2:converter-gson:2.10.0'
+
+    //Moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation 'com.squareup.retrofit2:converter-moshi:2.10.0'
 
 
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'

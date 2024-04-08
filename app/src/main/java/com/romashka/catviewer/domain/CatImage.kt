@@ -1,7 +1,8 @@
 package com.romashka.catviewer.domain
 
-import androidx.lifecycle.LiveData
+import com.squareup.moshi.Json
+
 
 data class CatImage(
-    val url: String
+    @Json(name = "url") val url: String
 )
