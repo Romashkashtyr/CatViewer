@@ -28,11 +28,14 @@ class CatHistoryViewModel : ViewModel() {
 //    }
 
 
+
+
     fun addToHistory(catHistory: CatHistory){
         val history = _catHistory.value ?: mutableListOf()
         history.add(catHistory)
         _catHistory.value = history
         currentIndex = history.size - 1
+        TODO()
     }
 
     fun getPreviousHistory() : CatHistory? {
