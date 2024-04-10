@@ -13,4 +13,6 @@ class GetCatsFactUseCase(private val repository: CatsViewModel) {
     fun getCatsImageUseCase(context: Context, imageView: ImageView){
         repository.loadRandomCatImage(context, imageView)
     }
+
+
 }

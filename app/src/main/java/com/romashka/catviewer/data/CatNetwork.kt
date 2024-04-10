@@ -27,7 +27,7 @@ object CatNetwork {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.thecatapi.com/v1/images/search/")
+        .baseUrl("https://api.thecatapi.com/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
@@ -39,4 +39,6 @@ object CatNetwork {
     //val catAdapterMoshi : JsonAdapter<CatImage> = moshi.adapter(CatImage::class.java)
 }
 
+
+//https://api.thecatapi.com/v1/images/search/
 

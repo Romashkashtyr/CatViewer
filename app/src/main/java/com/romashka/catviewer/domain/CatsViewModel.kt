@@ -18,6 +18,8 @@ import retrofit2.Response
 
 class CatsViewModel: ViewModel() {
 
+    private var lastLoadedImageUrl : String? = null
+
     val catFactsHistory = mutableListOf<CatFactResponse>()
 
     val catApi = CatNetwork.catFactApi
@@ -29,6 +31,11 @@ class CatsViewModel: ViewModel() {
     val _catImage = MutableLiveData<CatImage>()
     val catImage: LiveData<CatImage>
         get() = _catImage
+
+
+//    private val _catHistory = MutableLiveData<MutableList<CatHistory>>()
+//    val catHistory : LiveData<MutableList<CatHistory>>
+//        get() = _catHistory
 
 
     val catImageApi = CatNetwork.catApiImage
@@ -62,11 +69,13 @@ class CatsViewModel: ViewModel() {
     }
 
 
+
+
     fun loadRandomCatImage(context: Context, imageView: ImageView) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = catImageApi.getCatImage()
-                val imageUrl = response.url
+                val imageUrl = response.firstOrNull()?.url
 
                 CoroutineScope(Dispatchers.Main).launch {
                     Glide.with(context)
@@ -81,7 +90,30 @@ class CatsViewModel: ViewModel() {
                 e.message
             }
 
+
+
         }
+
+
+
+
+
+
+//        fun addToHistory(catHistoryItems: CatHistory){
+//            val currentHistory = _catHistory.value ?: mutableListOf()
+//            currentHistory.add(catHistoryItems)
+//            _catHistory.value = currentHistory
+//        }
+//
+//        fun getPreviousHistory() : CatHistory?{
+//            val currentCatsHistory = _catHistory.value
+//
+//            return if(currentCatsHistory != null){
+//                currentCatsHistory.last()
+//            } else {
+//                null
+//            }
+//        }
 
 //    fun loadRandomCatImage(): LiveData<CatImage>  {
 //        val call = catApi.getCatImage()
@@ -116,6 +148,14 @@ class CatsViewModel: ViewModel() {
 
 
     }
+
+
+    fun lastImage(context: Context, imageView: ImageView) : String?{
+        val imageUrl = loadRandomCatImage(context, imageView)
+        lastLoadedImageUrl = imageUrl.toString()
+        return lastLoadedImageUrl
+    }
+
 }
 
 //    fun onRefreshImage(){

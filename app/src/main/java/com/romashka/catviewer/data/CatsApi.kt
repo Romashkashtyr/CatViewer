@@ -11,7 +11,7 @@ interface CatsApi {
     fun getFacts(): Call<CatFactResponse>
 
     @GET("v1/images/search")
-    suspend fun getCatImage(): CatImage
+    suspend fun getCatImage(): List<CatImage>
 }
 
 

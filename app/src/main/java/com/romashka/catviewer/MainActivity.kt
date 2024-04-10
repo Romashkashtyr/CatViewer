@@ -3,19 +3,23 @@ package com.romashka.catviewer
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
+import com.romashka.catviewer.domain.CatHistoryViewModel
 import com.romashka.catviewer.domain.CatsViewModel
 import com.romashka.catviewer.domain.GetCatsFactUseCase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: CatsViewModel
+    private lateinit var historyViewModel : CatHistoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[CatsViewModel::class.java]
+        historyViewModel = ViewModelProvider(this)[CatHistoryViewModel::class.java]
 
         val imageUseCase = GetCatsFactUseCase(viewModel)
 
@@ -25,7 +29,34 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonNext.setOnClickListener {
             viewModel.getCatsFactUseCase()
+            imageUseCase.getCatsImageUseCase(this, binding.imageView)
+            historyViewModel.addToHistory(historyViewModel.catHistory.value, )
+            //viewModel.catImage.value?.let { it1 ->
+//                historyViewModel.addToHistory(viewModel.catData.value.toString(),
+//                    it1
+//                )
+    //        }
+
+
         }
+
+        imageUseCase.getCatsImageUseCase(this, binding.imageView)
+
+
+
+        binding.buttonPrevious.setOnClickListener {
+            val previousFact = historyViewModel.getPreviousHistory()
+            if(previousFact  != null){
+                binding.textView.text = previousFact.fact
+            }
+
+            val lastUploadedImage = viewModel.lastImage(this, binding.imageView)
+
+            Glide.with(this)
+                .load(lastUploadedImage)
+                .into(binding.imageView)
+        }
+
 
 
 //        binding.buttonPrevious.setOnClickListener {
@@ -36,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
-        imageUseCase.getCatsImageUseCase(this, binding.imageView)
+
 
 
 //        viewModel.catImage.observe(this) {
