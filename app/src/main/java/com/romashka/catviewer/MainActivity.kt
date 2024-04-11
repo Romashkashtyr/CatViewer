@@ -29,9 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonNext.setOnClickListener {
             viewModel.getCatsFactUseCase()
+            viewModel.addToHistory(viewModel.getCatsFactUseCase())
             imageUseCase.getCatsImageUseCase(this, binding.imageView)
-            historyViewModel.addToHistory(historyViewModel.catHistory.value, )
-            TODO()
             //viewModel.catImage.value?.let { it1 ->
 //                historyViewModel.addToHistory(viewModel.catData.value.toString(),
 //                    it1

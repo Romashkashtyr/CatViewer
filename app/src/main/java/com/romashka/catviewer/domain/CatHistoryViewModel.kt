@@ -3,8 +3,12 @@ package com.romashka.catviewer.domain
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
-class CatHistoryViewModel : ViewModel() {
+class CatHistoryViewModel : ViewModel(){
+
+
+    private val functionsOfViewModel = CatsViewModel()
 
     var currentIndex = -1
 
@@ -38,6 +42,27 @@ class CatHistoryViewModel : ViewModel() {
         TODO()
     }
 
+    fun getCurrentFact() : CatHistory?{
+        return  _catHistory.value?.get(currentIndex)
+    }
+
+    fun goToPreviousFact() : Boolean{
+        if(currentIndex > 0){
+            currentIndex--
+            return true
+        }
+        return false
+    }
+
+    fun goToNextFact(){
+        if(currentIndex < (_catHistory.value?.size ?: 0) - 1){
+            currentIndex++
+        } else{
+            functionsOfViewModel.getCatsFactUseCase()
+        }
+
+    }
+
     fun getPreviousHistory() : CatHistory? {
         val history = _catHistory.value ?: return null
         if(currentIndex > 0){
@@ -46,6 +71,8 @@ class CatHistoryViewModel : ViewModel() {
         }
         return null
     }
+
+
 
 
 //    fun getPreviousHistory() : CatHistory?{ actual

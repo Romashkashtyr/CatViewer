@@ -32,6 +32,7 @@ class CatsViewModel: ViewModel() {
     val catImage: LiveData<CatImage>
         get() = _catImage
 
+    var currentFactIndex = 0
 
 //    private val _catHistory = MutableLiveData<MutableList<CatHistory>>()
 //    val catHistory : LiveData<MutableList<CatHistory>>
@@ -40,6 +41,8 @@ class CatsViewModel: ViewModel() {
 
     val catImageApi = CatNetwork.catApiImage
     //val moshiCatAdapter = CatNetwork.catAdapterMoshi
+
+    val catsItemsShow = mutableListOf<CatFactResponse>()
 
     init {
         getCatsFactUseCase()
@@ -66,8 +69,19 @@ class CatsViewModel: ViewModel() {
 
         })
         return _catData
+
     }
 
+
+    private fun checkCatsFacts(fact : CatFactResponse) : CatFactResponse{
+        catsItemsShow[currentFactIndex]
+        currentFactIndex++
+        if(catsItemsShow != null){
+            catsItemsShow.add(fact)
+        }
+        return catsItemsShow[currentFactIndex]
+        TODO()
+    }
 
 
 
@@ -133,10 +147,7 @@ class CatsViewModel: ViewModel() {
 //    }
 
 
-        fun addToHistory(factResponse: CatFactResponse) {
-            catFactsHistory.add(factResponse)
 
-        }
 
         fun getPreviousFact(): CatFactResponse? {
             return if (catFactsHistory.size > 1) {
@@ -148,12 +159,22 @@ class CatsViewModel: ViewModel() {
 
 
     }
+    fun addToHistory(fact : LiveData<CatFactResponse>) : List<LiveData<CatFactResponse>> {
+        val newFactsList = mutableListOf<LiveData<CatFactResponse>>()
+        newFactsList.add(fact)
+        return newFactsList
+    }
 
 
     fun lastImage(context: Context, imageView: ImageView) : String?{
         val imageUrl = loadRandomCatImage(context, imageView)
         lastLoadedImageUrl = imageUrl.toString()
         return lastLoadedImageUrl
+    }
+
+    interface GetFunctionOfViewModel{
+
+        fun getCatsFactsUseCase() : LiveData<CatFactResponse>
     }
 
 }
