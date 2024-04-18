@@ -8,7 +8,7 @@ import retrofit2.http.GET
 interface CatsApi {
 
     @GET("/fact")
-    fun getFacts(): Call<CatFactResponse>
+    suspend fun getFacts(): CatFactResponse
 
     @GET("v1/images/search")
     suspend fun getCatImage(): List<CatImage>

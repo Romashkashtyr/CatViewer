@@ -5,32 +5,38 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
-import com.romashka.catviewer.domain.CatHistoryViewModel
-import com.romashka.catviewer.domain.CatsViewModel
-import com.romashka.catviewer.domain.GetCatsFactUseCase
+import com.romashka.catviewer.domain.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: CatsViewModel
-    private lateinit var historyViewModel : CatHistoryViewModel
+    private lateinit var viewModel: MainViewModel
+   // private lateinit var historyViewModel : CatHistoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[CatsViewModel::class.java]
-        historyViewModel = ViewModelProvider(this)[CatHistoryViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+       // historyViewModel = ViewModelProvider(this)[CatHistoryViewModel::class.java]
 
-        val imageUseCase = GetCatsFactUseCase(viewModel)
+      //  val imageUseCase = GetCatsFactUseCase(viewModel) -> actual
+
+        viewModel.getCattingFact()
+        viewModel.loadingRandomCatImage()
+        Glide.with(this)
+            .load("https://api.thecatapi.com/")
+            .into(binding.imageView)
 
         viewModel.catData.observe(this@MainActivity) {
             binding.textView.text = it.fact
         }
 
+
+
         binding.buttonNext.setOnClickListener {
-            viewModel.getCatsFactUseCase()
-            viewModel.addToHistory(viewModel.getCatsFactUseCase())
-            imageUseCase.getCatsImageUseCase(this, binding.imageView)
+           // viewModel.getCatsFactUseCase() -> first three codes are actual
+          //  viewModel.addToHistory(viewModel.getCatsFactUseCase())
+          //  imageUseCase.getCatsImageUseCase(this, binding.imageView)
             //viewModel.catImage.value?.let { it1 ->
 //                historyViewModel.addToHistory(viewModel.catData.value.toString(),
 //                    it1
@@ -38,23 +44,26 @@ class MainActivity : AppCompatActivity() {
     //        }
 
 
+
         }
 
-        imageUseCase.getCatsImageUseCase(this, binding.imageView)
+
+
+        //imageUseCase.getCatsImageUseCase(this, binding.imageView) - > actual
 
 
 
         binding.buttonPrevious.setOnClickListener {
-            val previousFact = historyViewModel.getPreviousHistory()
-            if(previousFact  != null){
-                binding.textView.text = previousFact.fact
-            }
+           // val previousFact = //historyViewModel.getPreviousHistory()
+//            if(previousFact  != null){
+//                binding.textView.text = previousFact.fact
+//            }
 
-            val lastUploadedImage = viewModel.lastImage(this, binding.imageView)
+           // val lastUploadedImage = viewModel.lastImage(this, binding.imageView) -> actual
 
-            Glide.with(this)
-                .load(lastUploadedImage)
-                .into(binding.imageView)
+//            Glide.with(this) -> Actual
+//                .load(lastUploadedImage)
+//                .into(binding.imageView)
         }
 
 
