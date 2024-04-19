@@ -75,8 +75,6 @@ class MainViewModel
                     _catImage.postValue(listOf(it))
                 } ?: throw IOException("No cat image found")
                // _catImage.postValue(catsImageGetting.invokeImage())
-            } catch (e: IOException) {
-                throw IOException("Isn't responding")
             } catch (e: HttpException) {
                 e.response()
                 e.message
