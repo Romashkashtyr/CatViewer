@@ -3,7 +3,7 @@ package com.romashka.catviewer.domain
 //class GetCatsFactUseCase(private val repository: CatsViewModel)
 class GetCatsFactUseCase(private val repository: CatRepository)  {
 
-    suspend fun invoke() : CatFactResponse {
+    suspend fun execute() : CatFactResponse {
         return repository.getCatFact()
     }
 

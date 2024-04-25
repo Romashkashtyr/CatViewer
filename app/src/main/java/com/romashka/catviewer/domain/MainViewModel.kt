@@ -11,18 +11,23 @@ import okio.IOException
 import retrofit2.HttpException
 
 class MainViewModel
-//    private val catsFactGetting: GetCatsFactUseCase,
-//    private val catsImageGetting: GetImageUseCase
  : ViewModel() {
-
 
     private val catsFactGetting = GetCatsFactUseCase(CatRepository(CatNetwork.catFactApi))
     private val catsImageGetting = GetImageUseCase(CatsRepositoryImage(CatNetwork.catApiImage))
     private var lastLoadedImageUrl: String? = null
 
+
+    private val shownFact = mutableListOf<CatFactResponse>()
+    private val shownImage = mutableListOf<CatImage>()
+    private val catHistoryList = mutableListOf<CatData>()
+
     val catFactsHistory = mutableListOf<CatFactResponse>()
 
-    val catApi = CatNetwork.catFactApi
+    val _catDataHistory = MutableLiveData<CatData?>()
+    val catDataHistory: LiveData<CatData?>
+        get() = _catDataHistory
+
 
     val _catData = MutableLiveData<CatFactResponse>()
     val catData: LiveData<CatFactResponse>
@@ -34,30 +39,59 @@ class MainViewModel
 
     var currentFactIndex = 0
 
-//    private val _catHistory = MutableLiveData<MutableList<CatHistory>>()
-//    val catHistory : LiveData<MutableList<CatHistory>>
-//        get() = _catHistory
-
-
-    val catImageApi = CatNetwork.catApiImage
-    //val moshiCatAdapter = CatNetwork.catAdapterMoshi
-
     val catsItemsShow = mutableListOf<CatFactResponse>()
 
-    init {
-        //  getCatsFactUseCase()  -> actual
-    }
+    var catIndex = 0
 
     init {
         getCattingFact()
         loadingRandomCatImage()
     }
 
+    fun moveToNextPage(){
+        if (catHistoryList.isEmpty()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val newFact = catsFactGetting.execute().fact
+                val newImage = catsImageGetting.executeImage().firstOrNull()
+                if (newFact != null && newImage != null) {
+                    val catDataItems = CatData(fact = newFact, catsImageUrl = newImage)
+                    addToHistoryList(catDataItems)
+                    updateCurrentFact(newFact)
+                    updateCurrentImage(newImage)
+                }
+            }
+        }
 
-    fun getCattingFact() {
+
+    }
+
+    private fun updateCurrentFact(newFact: String) {
+        val currentData = catHistoryList.lastOrNull()
+        if (currentData != null) {
+            currentData.fact = newFact
+            _catDataHistory.postValue(currentData)
+        }
+    }
+
+    private fun updateCurrentImage(newImage: CatImage) {
+        val currentImageData = catHistoryList.lastOrNull()
+        if (currentImageData != null) {
+            currentImageData.catsImageUrl = newImage
+            _catDataHistory.postValue(currentImageData)
+
+        }
+    }
+
+    fun addToHistoryList(newData: CatData) {
+        catHistoryList.add(newData)
+
+    }
+
+
+    private fun getCattingFact() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                _catData.postValue(catsFactGetting.invoke())
+                _catData.postValue(catsFactGetting.execute())
             } catch (e: IOException) {
                 throw IOException("Isn't responding")
             } catch (e: HttpException) {
@@ -67,45 +101,20 @@ class MainViewModel
         }
     }
 
-    fun loadingRandomCatImage() {
+    private fun loadingRandomCatImage() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val catImageIt = catsImageGetting.invokeImage().firstOrNull()
+                val catImageIt = catsImageGetting.executeImage().firstOrNull()
                 catImageIt?.let {
                     _catImage.postValue(listOf(it))
                 } ?: throw IOException("No cat image found")
-               // _catImage.postValue(catsImageGetting.invokeImage())
+                // _catImage.postValue(catsImageGetting.invokeImage())
             } catch (e: HttpException) {
                 e.response()
                 e.message
             }
         }
 
-
-//    fun getCatsFactUseCase(): LiveData<CatFactResponse> {  -> actual
-//        getCatFacts.getCatsFactUseCase()
-//        val call = catApi.getFacts()
-//        call.enqueue(object : Callback<CatFactResponse> {
-//            override fun onResponse(
-//                call: Call<CatFactResponse>,
-//                response: Response<CatFactResponse>
-//            ) {
-//                if (response.isSuccessful)
-//                    _catData.value = response.body()
-////                val fact = response.body()
-////                if (fact != null) {
-////                    addToHistory(fact)
-////                }
-//            }
-//
-//            override fun onFailure(call: Call<CatFactResponse>, response: Throwable) {
-//                throw RuntimeException("${response.message}")
-//            }
-//
-//        })
-//        return _catData
-//
-//    }
 
 
         fun checkCatsFacts(fact: CatFactResponse): CatFactResponse {
@@ -116,103 +125,16 @@ class MainViewModel
             }
             return catsItemsShow[currentFactIndex]
             TODO()
+
+
         }
 
-
-//    fun loadRandomCatImage(context: Context, imageView: ImageView) { -> actual
-//        CoroutineScope(Dispatchers.IO).launch {
-//            try {
-//                val response = catImageApi.getCatImage()
-//                val imageUrl = response.firstOrNull()?.url
-//
-//                CoroutineScope(Dispatchers.Main).launch {
-//                    Glide.with(context)
-//                        .load(imageUrl)
-//                        .into(imageView)
-//                }
-//
-//            } catch (e: IOException) {
-//                throw IOException("Isn't responding")
-//            } catch (e: HttpException){
-//                e.response()
-//                e.message
-//            }
-//        }
-
-
-//        fun addToHistory(catHistoryItems: CatHistory){
-//            val currentHistory = _catHistory.value ?: mutableListOf()
-//            currentHistory.add(catHistoryItems)
-//            _catHistory.value = currentHistory
-//        }
-//
-//        fun getPreviousHistory() : CatHistory?{
-//            val currentCatsHistory = _catHistory.value
-//
-//            return if(currentCatsHistory != null){
-//                currentCatsHistory.last()
-//            } else {
-//                null
-//            }
-//        }
-
-//    fun loadRandomCatImage(): LiveData<CatImage>  {
-//        val call = catApi.getCatImage()
-//        call.enqueue(object : Callback<CatImage> {
-//            override fun onResponse(call: Call<CatImage>, response: Response<CatImage>) {
-//                if (response.isSuccessful) {
-//                    _catImage.value = response.body()
-//                    }
-//                }
-//
-//            override fun onFailure(p0: Call<CatImage>, p1: Throwable) {
-//                throw RuntimeException("${p1.message}")
-//            }
-//        })
-//        return _catImage
-//
-//    }
-
-
-        fun getPreviousFact(): CatFactResponse? {
-            return if (catFactsHistory.size > 1) {
-                catFactsHistory[catFactsHistory.size - 2]
-            } else {
-                null
-            }
+        fun addToHistory(fact: LiveData<CatFactResponse>): List<LiveData<CatFactResponse>> {
+            val newFactsList = mutableListOf<LiveData<CatFactResponse>>()
+            newFactsList.add(fact)
+            return newFactsList
         }
-
-
     }
-
-    fun addToHistory(fact: LiveData<CatFactResponse>): List<LiveData<CatFactResponse>> {
-        val newFactsList = mutableListOf<LiveData<CatFactResponse>>()
-        newFactsList.add(fact)
-        return newFactsList
-    }
-
-
-//    fun lastImage(context: Context, imageView: ImageView) : String?{ -> actual
-//        val imageUrl = loadRandomCatImage(context, imageView)
-//        lastLoadedImageUrl = imageUrl.toString()
-//        return lastLoadedImageUrl
-//    }
-
-    interface GetFunctionOfViewModel {
-
-        fun getCatsFactsUseCase(): LiveData<CatFactResponse>
-    }
-
-
-
-
 }
 
-//    fun onRefreshImage(){
-//    }
 
-
-//    fun onRefreshFact(newFact: CatFactResponse): String{
-//        _catFact.value = newFact
-//        return newFact.fact
-//    }

@@ -10,22 +10,24 @@ import com.romashka.catviewer.domain.MainViewModel
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-   // private lateinit var historyViewModel : CatHistoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-       // historyViewModel = ViewModelProvider(this)[CatHistoryViewModel::class.java]
 
       //  val imageUseCase = GetCatsFactUseCase(viewModel) -> actual
 
-        viewModel.getCattingFact()
-        viewModel.loadingRandomCatImage()
-        Glide.with(this)
-            .load("https://api.thecatapi.com/")
-            .into(binding.imageView)
+
+        viewModel.catImage.observe(this){
+            val url = it.firstOrNull()
+            Glide.with(this)
+                .load(url?.url)
+                .into(binding.imageView)
+        }
+
+
 
         viewModel.catData.observe(this@MainActivity) {
             binding.textView.text = it.fact
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.buttonNext.setOnClickListener {
+            viewModel.moveToNextPage()
            // viewModel.getCatsFactUseCase() -> first three codes are actual
           //  viewModel.addToHistory(viewModel.getCatsFactUseCase())
           //  imageUseCase.getCatsImageUseCase(this, binding.imageView)
