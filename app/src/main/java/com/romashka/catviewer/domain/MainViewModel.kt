@@ -49,7 +49,7 @@ class MainViewModel
     }
 
     fun moveToNextPage(){
-        if (catHistoryList.isEmpty()) {
+        if (catHistoryList.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val newFact = catsFactGetting.execute().fact
                 val newImage = catsImageGetting.executeImage().firstOrNull()
@@ -61,30 +61,24 @@ class MainViewModel
                 }
             }
         }
-
-
     }
 
-    private fun updateCurrentFact(newFact: String) {
+    private fun updateCurrentFact(newFact : String){
         val currentData = catHistoryList.lastOrNull()
-        if (currentData != null) {
-            currentData.fact = newFact
-            _catDataHistory.postValue(currentData)
-        }
+        currentData?.fact = newFact
+        _catDataHistory.postValue(currentData)
     }
 
-    private fun updateCurrentImage(newImage: CatImage) {
+    private fun updateCurrentImage(newImage : CatImage){
         val currentImageData = catHistoryList.lastOrNull()
-        if (currentImageData != null) {
-            currentImageData.catsImageUrl = newImage
-            _catDataHistory.postValue(currentImageData)
-
-        }
+        currentImageData?.catsImageUrl = newImage
+        _catDataHistory.postValue(currentImageData)
     }
 
-    fun addToHistoryList(newData: CatData) {
-        catHistoryList.add(newData)
 
+    private fun addToHistoryList(newData: CatData) {
+        catHistoryList.add(newData)
+        _catDataHistory.postValue(newData)
     }
 
 
@@ -108,7 +102,6 @@ class MainViewModel
                 catImageIt?.let {
                     _catImage.postValue(listOf(it))
                 } ?: throw IOException("No cat image found")
-                // _catImage.postValue(catsImageGetting.invokeImage())
             } catch (e: HttpException) {
                 e.response()
                 e.message

@@ -33,10 +33,6 @@ object CatNetwork {
 
     val catApiImage = retrofit.create(CatsApi::class.java)
 
-
-
-
-    //val catAdapterMoshi : JsonAdapter<CatImage> = moshi.adapter(CatImage::class.java)
 }
 
 
