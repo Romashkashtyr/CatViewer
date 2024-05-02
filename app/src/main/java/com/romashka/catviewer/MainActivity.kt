@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
 import com.romashka.catviewer.domain.viewmodels.MainViewModel
+import com.romashka.catviewer.domain.viewmodels.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        val viewModelFactory = MainViewModelFactory()
+        viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 
 
 

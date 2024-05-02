@@ -3,6 +3,7 @@ package com.romashka.catviewer.domain.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.romashka.catviewer.data.CatNetwork
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.domain.repository.CatRepository
@@ -105,6 +106,8 @@ class MainViewModel
         }
 
     }
+
+
 }
 
 
