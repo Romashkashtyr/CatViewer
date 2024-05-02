@@ -1,6 +1,5 @@
 package com.romashka.catviewer.domain
 
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 
 

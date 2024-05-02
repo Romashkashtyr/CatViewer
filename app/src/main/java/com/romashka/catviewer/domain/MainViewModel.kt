@@ -13,7 +13,7 @@ import retrofit2.HttpException
 class MainViewModel
  : ViewModel() {
 
-    private val catsFactGetting = GetCatsFactUseCase(CatRepository(CatNetwork.catFactApi))
+    private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
     private val catsImageGetting = GetImageUseCase(CatsRepositoryImage(CatNetwork.catApiImage))
     private var lastLoadedImageUrl: String? = null
 

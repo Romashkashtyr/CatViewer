@@ -11,6 +11,3 @@ interface CatsApi {
     @GET("v1/images/search")
     suspend fun getCatImage(): List<CatData>
 }
-
-
-//v1/images/search
