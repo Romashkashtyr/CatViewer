@@ -18,28 +18,28 @@ class MainViewModel
     private var lastLoadedImageUrl: String? = null
 
 
-    private val shownFact = mutableListOf<CatFactResponse>()
-    private val shownImage = mutableListOf<CatImage>()
+    private val shownFact = mutableListOf<CatData>()
+    private val shownImage = mutableListOf<CatData>()
     private val catHistoryList = mutableListOf<CatData>()
 
-    val catFactsHistory = mutableListOf<CatFactResponse>()
+    val catFactsHistory = mutableListOf<CatData>()
 
     val _catDataHistory = MutableLiveData<CatData?>()
     val catDataHistory: LiveData<CatData?>
         get() = _catDataHistory
 
 
-    val _catData = MutableLiveData<CatFactResponse>()
-    val catData: LiveData<CatFactResponse>
+    val _catData = MutableLiveData<CatData>()
+    val catData: LiveData<CatData>
         get() = _catData
 
-    val _catImage = MutableLiveData<List<CatImage>>()
-    val catImage: LiveData<List<CatImage>>
+    val _catImage = MutableLiveData<List<CatData>>()
+    val catImage: LiveData<List<CatData>>
         get() = _catImage
 
     var currentFactIndex = 0
 
-    val catsItemsShow = mutableListOf<CatFactResponse>()
+    val catsItemsShow = mutableListOf<CatData>()
 
     var catIndex = 0
 
@@ -52,9 +52,9 @@ class MainViewModel
         if (catHistoryList.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val newFact = catsFactGetting.execute().fact
-                val newImage = catsImageGetting.executeImage().firstOrNull()
+                val newImage = catsImageGetting.executeImage().firstOrNull()?.url
                 if (newFact != null && newImage != null) {
-                    val catDataItems = CatData(fact = newFact, catsImageUrl = newImage)
+                    val catDataItems = CatData(fact = newFact, url = newImage)
                     addToHistoryList(catDataItems)
                     updateCurrentFact(newFact)
                     updateCurrentImage(newImage)
@@ -69,9 +69,9 @@ class MainViewModel
         _catDataHistory.postValue(currentData)
     }
 
-    private fun updateCurrentImage(newImage : CatImage){
+    private fun updateCurrentImage(newImage : String){
         val currentImageData = catHistoryList.lastOrNull()
-        currentImageData?.catsImageUrl = newImage
+        currentImageData?.url = newImage
         _catDataHistory.postValue(currentImageData)
     }
 
@@ -99,8 +99,8 @@ class MainViewModel
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val catImageIt = catsImageGetting.executeImage().firstOrNull()
-                catImageIt?.let {
-                    _catImage.postValue(listOf(it))
+                catImageIt?.let {image ->
+                    _catImage.postValue(listOf(image))
                 } ?: throw IOException("No cat image found")
             } catch (e: HttpException) {
                 e.response()
@@ -110,7 +110,7 @@ class MainViewModel
 
 
 
-        fun checkCatsFacts(fact: CatFactResponse): CatFactResponse {
+        fun checkCatsFacts(fact: CatData): CatData {
             catsItemsShow[currentFactIndex]
             currentFactIndex++
             if (catsItemsShow != null) {
@@ -122,8 +122,8 @@ class MainViewModel
 
         }
 
-        fun addToHistory(fact: LiveData<CatFactResponse>): List<LiveData<CatFactResponse>> {
-            val newFactsList = mutableListOf<LiveData<CatFactResponse>>()
+        fun addToHistory(fact: LiveData<CatData>): List<LiveData<CatData>> {
+            val newFactsList = mutableListOf<LiveData<CatData>>()
             newFactsList.add(fact)
             return newFactsList
         }

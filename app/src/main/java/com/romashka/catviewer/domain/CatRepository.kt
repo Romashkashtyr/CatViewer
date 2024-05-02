@@ -7,7 +7,7 @@ import retrofit2.Call
 
 class CatRepository(private val catsApi: CatsApi) {
 
-    suspend fun getCatFact() : CatFactResponse {
+    suspend fun getCatFact() : CatData {
         return catsApi.getFacts()
     }
 
