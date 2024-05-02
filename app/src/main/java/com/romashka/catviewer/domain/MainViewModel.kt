@@ -27,9 +27,6 @@ class MainViewModel
     val catData: LiveData<CatData>
         get() = _catData
 
-    val _catImage = MutableLiveData<List<CatData>>()
-    val catImage: LiveData<List<CatData>>
-        get() = _catImage
 
     var currentFactIndex = 0
 
@@ -94,7 +91,7 @@ class MainViewModel
             try {
                 val catImageIt = catsImageGetting.executeImage().firstOrNull()
                 catImageIt?.let {image ->
-                    _catImage.postValue(listOf(image))
+                    _catData.postValue(image)
                 } ?: throw IOException("No cat image found")
             } catch (e: HttpException) {
                 e.response()
