@@ -15,14 +15,8 @@ class MainViewModel
 
     private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
     private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
-    private var lastLoadedImageUrl: String? = null
 
-
-    private val shownFact = mutableListOf<CatData>()
-    private val shownImage = mutableListOf<CatData>()
     private val catHistoryList = mutableListOf<CatData>()
-
-    val catFactsHistory = mutableListOf<CatData>()
 
     val _catDataHistory = MutableLiveData<CatData?>()
     val catDataHistory: LiveData<CatData?>
@@ -108,25 +102,6 @@ class MainViewModel
             }
         }
 
-
-
-        fun checkCatsFacts(fact: CatData): CatData {
-            catsItemsShow[currentFactIndex]
-            currentFactIndex++
-            if (catsItemsShow != null) {
-                catsItemsShow.add(fact)
-            }
-            return catsItemsShow[currentFactIndex]
-            TODO()
-
-
-        }
-
-        fun addToHistory(fact: LiveData<CatData>): List<LiveData<CatData>> {
-            val newFactsList = mutableListOf<LiveData<CatData>>()
-            newFactsList.add(fact)
-            return newFactsList
-        }
     }
 }
 
