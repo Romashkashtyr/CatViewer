@@ -14,7 +14,7 @@ class MainViewModel
  : ViewModel() {
 
     private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
-    private val catsImageGetting = GetImageUseCase(CatsRepositoryImage(CatNetwork.catApiImage))
+    private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
     private var lastLoadedImageUrl: String? = null
 
 
