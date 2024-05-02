@@ -1,4 +1,4 @@
-package com.romashka.catviewer.domain
+package com.romashka.catviewer.domain.model
 
 import com.squareup.moshi.Json
 

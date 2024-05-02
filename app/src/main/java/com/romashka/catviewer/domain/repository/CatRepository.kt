@@ -1,9 +1,7 @@
-package com.romashka.catviewer.domain
+package com.romashka.catviewer.domain.repository
 
-import androidx.lifecycle.LiveData
-import com.romashka.catviewer.data.CatNetwork
 import com.romashka.catviewer.data.CatsApi
-import retrofit2.Call
+import com.romashka.catviewer.domain.model.CatData
 
 class CatRepository(private val catsApi: CatsApi) {
 

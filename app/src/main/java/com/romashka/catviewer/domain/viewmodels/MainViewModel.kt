@@ -1,9 +1,14 @@
-package com.romashka.catviewer.domain
+package com.romashka.catviewer.domain.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.romashka.catviewer.data.CatNetwork
+import com.romashka.catviewer.domain.model.CatData
+import com.romashka.catviewer.domain.repository.CatRepository
+import com.romashka.catviewer.domain.repository.CatsRepositoryImage
+import com.romashka.catviewer.domain.GetCatImage
+import com.romashka.catviewer.domain.GetCatsFact
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
 package com.romashka.catviewer.data
 
-import com.romashka.catviewer.domain.CatData
+import com.romashka.catviewer.domain.model.CatData
 import retrofit2.http.GET
 
 interface CatsApi {

@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
-import com.romashka.catviewer.domain.MainViewModel
+import com.romashka.catviewer.domain.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        viewModel.catImage.observe(this) {
-            val url = it.firstOrNull()?.url
+        viewModel.catData.observe(this) {
+            val url = it.url
             Glide.with(this)
                 .load(url)
                 .into(binding.imageView)
