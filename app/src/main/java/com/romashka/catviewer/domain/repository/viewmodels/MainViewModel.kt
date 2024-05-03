@@ -1,10 +1,11 @@
-package com.romashka.catviewer.domain.viewmodels
+package com.romashka.catviewer.domain.repository.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.romashka.catviewer.data.CatNetwork
+import com.romashka.catviewer.domain.CatFactResponse
+import com.romashka.catviewer.domain.CatImage
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.domain.repository.CatRepository
 import com.romashka.catviewer.domain.repository.CatsRepositoryImage
@@ -22,42 +23,76 @@ class MainViewModel
     private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
     private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
 
-    private val catHistoryList = mutableListOf<CatData>()
+    val catHistoryList = mutableListOf<CatData>()
 
     val _catDataHistory = MutableLiveData<CatData?>()
     val catDataHistory: LiveData<CatData?>
         get() = _catDataHistory
 
 
-    val _catData = MutableLiveData<CatData>()
-    val catData: LiveData<CatData>
+    val _catData = MutableLiveData<CatFactResponse>()
+    val catData: LiveData<CatFactResponse>
         get() = _catData
 
+    val _catImageInfo = MutableLiveData<CatImage>()
+    val catImageInfo: LiveData<CatImage>
+        get() = _catImageInfo
 
-    var currentFactIndex = 0
 
-    val catsItemsShow = mutableListOf<CatData>()
-
-    var catIndex = 0
+    var catIndex = -1
 
     init {
         getCattingFact()
         loadingRandomCatImage()
     }
 
-    fun moveToNextPage(){
-        if (catHistoryList.isNotEmpty()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val newFact = catsFactGetting.execute().fact
-                val newImage = catsImageGetting.executeImage().firstOrNull()?.url
-                if (newFact != null && newImage != null) {
-                    val catDataItems = CatData(fact = newFact, url = newImage)
-                    addToHistoryList(catDataItems)
-                    updateCurrentFact(newFact)
-                    updateCurrentImage(newImage)
-                }
+//    fun moveToNextPage(){
+//        if (catHistoryList.isNotEmpty()) {
+//            CoroutineScope(Dispatchers.IO).launch {
+//                val newFact = catsFactGetting.execute().fact
+//                val newImage = catsImageGetting.executeImage().firstOrNull()?.url
+//                if (newFact != null && newImage != null) {
+//                    val catDataItems = CatData(fact = newFact, url = newImage)
+//                    addToHistoryList(catDataItems)
+//                    updateCurrentFact(newFact)
+//                    updateCurrentImage(newImage)
+//                }
+//            }
+//        }
+//    }
+
+    private suspend fun loadingTheWholeCatDataToHistory(){
+        val image = catsImageGetting.executeImage().firstOrNull()
+        val fact = catsFactGetting.execute().fact
+        catHistoryList.add(CatData(fact = fact, url = image?.url ?: ""))
+    }
+
+    fun nextClickPage(){
+        CoroutineScope(Dispatchers.IO).launch {
+            catIndex++
+            if(catHistoryList.size >= catIndex){
+                loadingTheWholeCatDataToHistory()
+                updateFactAndImage()
+            } else {
+                getCattingFact()
+                loadingRandomCatImage()
             }
         }
+    }
+
+    fun goToThePreviousPage(){
+        CoroutineScope(Dispatchers.IO).launch {
+            if(catIndex > 0 && catHistoryList.size >= catIndex){
+                catHistoryList[catIndex--]
+                updateFactAndImage()
+            }
+        }
+    }
+
+    private fun updateFactAndImage(){
+        val updatedFact = catHistoryList[catIndex].fact
+        val updatedImage = catHistoryList[catIndex].url
+        _catDataHistory.postValue(CatData(fact = updatedFact, url = updatedImage))
     }
 
     private fun updateCurrentFact(newFact : String){
@@ -97,7 +132,7 @@ class MainViewModel
             try {
                 val catImageIt = catsImageGetting.executeImage().firstOrNull()
                 catImageIt?.let {image ->
-                    _catData.postValue(image)
+                    _catImageInfo.postValue(image)
                 } ?: throw IOException("No cat image found")
             } catch (e: HttpException) {
                 e.response()

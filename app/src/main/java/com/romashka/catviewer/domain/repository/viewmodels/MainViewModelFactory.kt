@@ -1,4 +1,4 @@
-package com.romashka.catviewer.domain.viewmodels
+package com.romashka.catviewer.domain.repository.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

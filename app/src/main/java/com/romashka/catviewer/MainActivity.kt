@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.ActivityMainBinding
-import com.romashka.catviewer.domain.viewmodels.MainViewModel
-import com.romashka.catviewer.domain.viewmodels.MainViewModelFactory
+import com.romashka.catviewer.domain.repository.viewmodels.MainViewModel
+import com.romashka.catviewer.domain.repository.viewmodels.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        viewModel.catData.observe(this) {
+        viewModel.catImageInfo.observe(this) {
             val url = it.url
             Glide.with(this)
                 .load(url)
@@ -35,12 +35,27 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.buttonNext.setOnClickListener {
-            viewModel.moveToNextPage()
-        }
+          //  viewModel.moveToNextPage()
+            viewModel.catDataHistory.observe(this){
+                Glide.with(this)
+                    .load(it?.url)
+                    .into(binding.imageView)
+                binding.textView.text = it?.fact
+            }
+                viewModel.nextClickPage()
+            }
 
 
         binding.buttonPrevious.setOnClickListener {
+            viewModel.catDataHistory.observe(this){
+                Glide.with(this)
+                    .load(it?.url)
+                    .into(binding.imageView)
+                binding.textView.text = it?.fact
+            }
+            viewModel.goToThePreviousPage()
         }
+
 
     }
 

@@ -5,7 +5,7 @@ import com.romashka.catviewer.domain.repository.CatRepository
 
 class GetCatsFact(private val repository: CatRepository)  {
 
-    suspend fun execute() : CatData {
+    suspend fun execute() : CatFactResponse {
         return repository.getCatFact()
     }
 

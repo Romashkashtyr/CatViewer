@@ -5,7 +5,7 @@ import com.romashka.catviewer.domain.repository.CatsRepositoryImage
 
 class GetCatImage(private val repository: CatsRepositoryImage) {
 
-    suspend fun executeImage() : List<CatData> {
+    suspend fun executeImage() : List<CatImage> {
         return repository.getCatImage()
     }
 }
