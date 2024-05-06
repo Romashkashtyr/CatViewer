@@ -1,5 +1,6 @@
 package com.romashka.catviewer.catadapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.romashka.catviewer.R
 import com.romashka.catviewer.databinding.ActivityFavouriteBinding
 import com.romashka.catviewer.databinding.FavouriteItemBinding
@@ -30,7 +32,10 @@ class CatFavouriteAdapter(val catDataList : List<CatData>)
 
         fun bind(){
             val items = catDataList[position]
-            holder.imageViewFav.
+            holder.apply {
+                imageViewFav.
+            }
         }
     }
+
 }
