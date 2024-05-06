@@ -30,11 +30,15 @@ class CatFavouriteAdapter(val catDataList : List<CatData>)
 
     override fun onBindViewHolder(holder: CatFavouriteViewHolder, position: Int) {
 
-        fun bind(){
+        fun bind(context: Context){
             val items = catDataList[position]
             holder.apply {
-                imageViewFav.
+                Glide.with(context)
+                    .load(items.url)
+                    .into(imageViewFav)
+                textViewFav.text = items.fact
             }
+
         }
     }
 
