@@ -61,5 +61,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
+        <ImageView
+            android:id="@+id/imageView_add_to_favourite"
+            android:layout_width="54dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.142"
+            app:srcCompat="@drawable/favorite_border" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

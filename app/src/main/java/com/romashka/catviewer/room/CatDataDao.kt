@@ -13,8 +13,8 @@ interface CatDataDao {
     fun getAll() : LiveData<List<CatData>>
 
     @Insert
-    fun insertAll(catDataInfo: CatData)
+    suspend fun insertAll(catDataInfo: CatData)
 
     @Delete
-    fun delete(catInfo: CatData)
+    suspend fun delete(catInfo: CatData)
 }
