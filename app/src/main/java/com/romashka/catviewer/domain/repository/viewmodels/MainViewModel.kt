@@ -17,11 +17,11 @@ import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.HttpException
 
-class MainViewModel
+class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImage: GetCatImage)
  : ViewModel() {
 
-    private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
-    private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
+    //private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
+   // private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
 
     val catHistoryList = mutableListOf<CatData>()
 
@@ -42,8 +42,7 @@ class MainViewModel
     var catIndex = -1
 
     init {
-        getCattingFact()
-        loadingRandomCatImage()
+        nextClickPage()
     }
 
 //    fun moveToNextPage(){
@@ -62,8 +61,8 @@ class MainViewModel
 //    }
 
     private suspend fun loadingTheWholeCatDataToHistory(){
-        val image = catsImageGetting.executeImage().firstOrNull()
-        val fact = catsFactGetting.execute().fact
+        val image = getCatImage.executeImage().firstOrNull()
+        val fact = getCatsFact.execute().fact
         catHistoryList.add(CatData(fact = fact, url = image?.url ?: ""))
     }
 
@@ -117,7 +116,7 @@ class MainViewModel
     private fun getCattingFact() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                _catData.postValue(catsFactGetting.execute())
+                _catData.postValue(getCatsFact.execute())
             } catch (e: IOException) {
                 throw IOException("Isn't responding")
             } catch (e: HttpException) {
@@ -130,7 +129,7 @@ class MainViewModel
     private fun loadingRandomCatImage() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val catImageIt = catsImageGetting.executeImage().firstOrNull()
+                val catImageIt = getCatImage.executeImage().firstOrNull()
                 catImageIt?.let {image ->
                     _catImageInfo.postValue(image)
                 } ?: throw IOException("No cat image found")
