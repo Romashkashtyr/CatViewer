@@ -1,4 +1,4 @@
-package com.romashka.catviewer
+package com.romashka.catviewer.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,8 +10,8 @@ import com.romashka.catviewer.domain.GetCatImage
 import com.romashka.catviewer.domain.GetCatsFact
 import com.romashka.catviewer.domain.repository.CatRepository
 import com.romashka.catviewer.domain.repository.CatsRepositoryImage
-import com.romashka.catviewer.domain.repository.viewmodels.MainViewModel
-import com.romashka.catviewer.domain.repository.viewmodels.MainViewModelFactory
+import com.romashka.catviewer.presentation.viewmodels.MainViewModel
+import com.romashka.catviewer.presentation.viewmodels.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

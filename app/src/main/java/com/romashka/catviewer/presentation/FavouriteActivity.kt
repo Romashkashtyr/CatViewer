@@ -1,4 +1,4 @@
-package com.romashka.catviewer
+package com.romashka.catviewer.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
