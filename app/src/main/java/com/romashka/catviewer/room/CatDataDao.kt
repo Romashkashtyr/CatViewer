@@ -1,5 +1,6 @@
 package com.romashka.catviewer.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -7,12 +8,12 @@ import androidx.room.Query
 import com.romashka.catviewer.domain.model.CatData
 
 @Dao
-interface Dao {
+interface CatDataDao {
     @Query("SELECT * FROM catList")
-    fun getAll() : List<CatData>
+    fun getAll() : LiveData<List<CatData>>
 
     @Insert
-    fun insertAll(vararg catDataInfo: CatData)
+    fun insertAll(catDataInfo: CatData)
 
     @Delete
     fun delete(catInfo: CatData)

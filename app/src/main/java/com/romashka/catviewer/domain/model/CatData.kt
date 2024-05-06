@@ -9,5 +9,5 @@ import com.squareup.moshi.Json
 data class CatData(
    @ColumnInfo(name = "fact_name") @Json(name = "fact") var fact : String,
    @ColumnInfo(name = "imageUrl_name") @Json(name = "url") var url : String,
-    @PrimaryKey var id: Int = 0
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
 )
