@@ -1,5 +1,6 @@
 package com.romashka.catviewer.catadapter
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -30,10 +31,10 @@ class CatFavouriteAdapter(val catDataList : List<CatData>)
 
     override fun onBindViewHolder(holder: CatFavouriteViewHolder, position: Int) {
 
-        fun bind(context: Context){
+        fun bind(application: Application){
             val items = catDataList[position]
             holder.apply {
-                Glide.with(context)
+                Glide.with(application.applicationContext)
                     .load(items.url)
                     .into(imageViewFav)
                 textViewFav.text = items.fact
