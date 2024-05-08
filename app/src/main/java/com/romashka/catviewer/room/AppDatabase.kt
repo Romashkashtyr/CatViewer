@@ -23,7 +23,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "catList"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 instanse = catDb
                 catDb
             }
