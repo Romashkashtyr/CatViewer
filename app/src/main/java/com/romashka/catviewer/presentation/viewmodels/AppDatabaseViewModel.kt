@@ -7,13 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.domain.repository.CatDatabaseRepository
 import com.romashka.catviewer.room.AppDatabase
+import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AppDatabaseViewModel(app: Application): AndroidViewModel(app) {
 
     private val repository: CatDatabaseRepository
-    private val allInfo: LiveData<List<CatData>>
+    private val allInfo: LiveData<List<CatDataForRoom>>
 
 
     init {
@@ -22,13 +23,13 @@ class AppDatabaseViewModel(app: Application): AndroidViewModel(app) {
         allInfo = repository.allCatData
     }
 
-    fun deleteCat(catDataInfo: CatData){
+    fun deleteCat(catDataInfo: CatDataForRoom){
         viewModelScope.launch(Dispatchers.IO) {
             repository.delete(catDataInfo)
         }
     }
 
-    fun insertCat(catDataInfo: CatData){
+    fun insertCat(catDataInfo: CatDataForRoom){
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(catDataInfo)
         }
