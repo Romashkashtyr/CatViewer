@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val catDb = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "catList"
+                    "catListing"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

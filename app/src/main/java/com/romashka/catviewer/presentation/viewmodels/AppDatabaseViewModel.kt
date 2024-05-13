@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class AppDatabaseViewModel(app: Application): AndroidViewModel(app) {
 
     private val repository: CatDatabaseRepository
-    private val allInfo: LiveData<List<CatDataForRoom>>
+    private val allInfo: LiveData<List<CatData>>
 
 
     init {
@@ -23,13 +23,13 @@ class AppDatabaseViewModel(app: Application): AndroidViewModel(app) {
         allInfo = repository.allCatData
     }
 
-    fun deleteCat(catDataInfo: CatDataForRoom){
+    fun deleteCat(catDataInfo: CatData){
         viewModelScope.launch(Dispatchers.IO) {
             repository.delete(catDataInfo)
         }
     }
 
-    fun insertCat(catDataInfo: CatDataForRoom){
+    fun insertCat(catDataInfo: CatData){
         viewModelScope.launch(Dispatchers.IO) {
             repository.insert(catDataInfo)
         }

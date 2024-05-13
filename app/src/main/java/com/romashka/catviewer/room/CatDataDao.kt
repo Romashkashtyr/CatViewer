@@ -11,11 +11,11 @@ import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 @Dao
 interface CatDataDao {
     @Query("SELECT * FROM catList")
-    fun getAll() : LiveData<List<CatDataForRoom>>
+    fun getAll() : LiveData<List<CatData>>
 
     @Insert
-    suspend fun insertAll(catDataInfo: CatDataForRoom)
+    suspend fun insertAll(catDataInfo: CatData)
 
     @Delete
-    suspend fun delete(catInfo: CatDataForRoom)
+    suspend fun delete(catInfo: CatData)
 }

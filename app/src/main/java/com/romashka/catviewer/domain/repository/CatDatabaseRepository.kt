@@ -7,13 +7,13 @@ import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 
 class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 
-    val allCatData: LiveData<List<CatDataForRoom>> = dbRepository.getAll()
+    val allCatData: LiveData<List<CatData>> = dbRepository.getAll()
 
-    suspend fun insert(catDataInfo: CatDataForRoom){
+    suspend fun insert(catDataInfo: CatData){
         dbRepository.insertAll(catDataInfo)
     }
 
-    suspend fun delete(catDataInfo: CatDataForRoom){
+    suspend fun delete(catDataInfo: CatData){
         dbRepository.delete(catDataInfo)
     }
 }
