@@ -1,27 +1,32 @@
 package com.romashka.catviewer.presentation.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.romashka.catviewer.data.CatNetwork
+import androidx.lifecycle.viewModelScope
 import com.romashka.catviewer.domain.CatFactResponse
 import com.romashka.catviewer.domain.CatImage
-import com.romashka.catviewer.domain.model.CatData
-import com.romashka.catviewer.domain.repository.CatRepository
-import com.romashka.catviewer.domain.repository.CatsRepositoryImage
 import com.romashka.catviewer.domain.GetCatImage
 import com.romashka.catviewer.domain.GetCatsFact
+import com.romashka.catviewer.domain.model.CatData
+import com.romashka.catviewer.domain.repository.CatDatabaseRepository
+import com.romashka.catviewer.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.HttpException
+import java.lang.Exception
 
-class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImage: GetCatImage)
- : ViewModel() {
+class MainViewModel(app: Application, private val getCatsFact: GetCatsFact, private val getCatImage: GetCatImage)
+ : AndroidViewModel(app) {
 
-    //private val catsFactGetting = GetCatsFact(CatRepository(CatNetwork.catFactApi))
-   // private val catsImageGetting = GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage))
+    private val repository: CatDatabaseRepository
+    private var allInfo: LiveData<List<CatData>>
+
+
 
     val catHistoryList = mutableListOf<CatData>()
 
@@ -43,22 +48,11 @@ class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImag
 
     init {
         nextClickPage()
+        val dao = AppDatabase.getDatabase(app).catDao()
+        repository = CatDatabaseRepository(dao)
+        allInfo = repository.allCatData
     }
 
-//    fun moveToNextPage(){
-//        if (catHistoryList.isNotEmpty()) {
-//            CoroutineScope(Dispatchers.IO).launch {
-//                val newFact = catsFactGetting.execute().fact
-//                val newImage = catsImageGetting.executeImage().firstOrNull()?.url
-//                if (newFact != null && newImage != null) {
-//                    val catDataItems = CatData(fact = newFact, url = newImage)
-//                    addToHistoryList(catDataItems)
-//                    updateCurrentFact(newFact)
-//                    updateCurrentImage(newImage)
-//                }
-//            }
-//        }
-//    }
 
     private suspend fun loadingTheWholeCatDataToHistory(){
         val image = getCatImage.executeImage().firstOrNull()
@@ -74,7 +68,7 @@ class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImag
                 updateFactAndImage()
             } else {
                 getCattingFact()
-                loadingRandomCatImage()
+            //    loadingRandomCatImage()
             }
         }
     }
@@ -124,9 +118,6 @@ class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImag
                 e.message
             }
         }
-    }
-
-    private fun loadingRandomCatImage() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val catImageIt = getCatImage.executeImage().firstOrNull()
@@ -138,8 +129,28 @@ class MainViewModel(private val getCatsFact: GetCatsFact, private val getCatImag
                 e.message
             }
         }
-
     }
+
+    fun saveData(catDataInfo: CatData){
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.insert(catDataInfo)
+            }
+        } catch (e: Exception) {
+            e.message
+        }
+    }
+
+    fun deleteData(catDataInfo: CatData) {
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
+                repository.delete(catDataInfo)
+            }
+        } catch (e: Exception){
+            e.message
+        }
+    }
+
 
 
 }

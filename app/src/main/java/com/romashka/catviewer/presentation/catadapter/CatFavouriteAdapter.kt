@@ -1,4 +1,4 @@
-package com.romashka.catviewer.catadapter
+package com.romashka.catviewer.presentation.catadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,10 +8,8 @@ import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.FavouriteItemBinding
 import com.romashka.catviewer.domain.model.CatData
 
-class CatFavouriteAdapter(val catDataList : ArrayList<CatData>,
-                          private val deleteDataByClickInterface: DeleteDataByClickInterface,
-                          val clickInterface: ClickInterface
-                          ) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
+class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataByClickInterfaceAdapter: DeleteDataByClickInterface) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
+
 
 
     inner class CatFavouriteViewHolder(binding: FavouriteItemBinding ) : RecyclerView.ViewHolder(binding.root) {
@@ -25,6 +23,10 @@ class CatFavouriteAdapter(val catDataList : ArrayList<CatData>,
                     .load(items.url)
                     .into(imageViewFav)
                 textViewFav.text = items.fact
+            }
+            itemView.setOnLongClickListener {
+                deleteDataByClickInterfaceAdapter
+                true
             }
         }
     }
@@ -40,29 +42,20 @@ class CatFavouriteAdapter(val catDataList : ArrayList<CatData>,
 
     override fun onBindViewHolder(holder: CatFavouriteViewHolder, position: Int) {
         holder.bind()
-
-        holder.itemView.setOnLongClickListener{
-            deleteDataByClickInterface.deleteDataByClickInterface(catDataList[position])
-            true
-        }
-
         notifyItemChanged(holder.adapterPosition)
+        updateList(catDataList)
     }
 
-    fun updateList(newList: List<CatData>) {
+    private fun updateList(newList: List<CatData>) {
         catDataList.clear()
 
         catDataList.addAll(newList)
 
     }
 
-
     interface DeleteDataByClickInterface {
         fun deleteDataByClickInterface(data: CatData)
     }
 
-    interface ClickInterface {
-        fun clickInterface(data: CatData)
-    }
 
 }
