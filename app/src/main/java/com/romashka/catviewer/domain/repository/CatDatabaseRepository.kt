@@ -3,7 +3,6 @@ package com.romashka.catviewer.domain.repository
 import androidx.lifecycle.LiveData
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.room.CatDataDao
-import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 
 class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 

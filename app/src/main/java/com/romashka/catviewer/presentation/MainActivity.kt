@@ -1,7 +1,5 @@
 package com.romashka.catviewer.presentation
 
-import android.app.Application
-import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +12,6 @@ import com.romashka.catviewer.domain.GetCatsFact
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.domain.repository.CatRepository
 import com.romashka.catviewer.domain.repository.CatsRepositoryImage
-import com.romashka.catviewer.presentation.catadapter.CatFavouriteAdapter
 import com.romashka.catviewer.presentation.viewmodels.MainViewModel
 import com.romashka.catviewer.presentation.viewmodels.MainViewModelFactory
 
@@ -27,9 +24,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val viewModelFactory = MainViewModelFactory(
-            GetCatsFact(CatRepository(
-            CatNetwork.catFactApi)),
-        GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage)), application)
+            GetCatsFact(
+                CatRepository(
+                    CatNetwork.catFactApi
+                )
+            ),
+            GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage)), application
+        )
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 
 
@@ -48,8 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buttonNext.setOnClickListener {
-                viewModel.nextClickPage()
-            }
+            viewModel.nextClickPage()
+        }
 
 
         binding.buttonPrevious.setOnClickListener {
@@ -57,8 +58,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-
 
 
 }

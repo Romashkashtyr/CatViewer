@@ -6,7 +6,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.romashka.catviewer.domain.model.CatData
-import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 
 @Dao
 interface CatDataDao {

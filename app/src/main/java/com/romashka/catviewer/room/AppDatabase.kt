@@ -5,9 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.romashka.catviewer.domain.model.CatData
-import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 
-@Database(entities = [CatDataForRoom::class], version = 1, exportSchema = false)
+@Database(entities = [CatData::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun catDao() : CatDataDao

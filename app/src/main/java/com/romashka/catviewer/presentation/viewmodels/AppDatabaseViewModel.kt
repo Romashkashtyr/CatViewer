@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.domain.repository.CatDatabaseRepository
 import com.romashka.catviewer.room.AppDatabase
-import com.romashka.catviewer.room.datainterfaces.CatDataForRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
