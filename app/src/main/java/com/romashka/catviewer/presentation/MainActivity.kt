@@ -1,5 +1,6 @@
 package com.romashka.catviewer.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,6 +56,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonPrevious.setOnClickListener {
             viewModel.goToThePreviousPage()
+        }
+
+        binding.buttonGoToFavourite.setOnClickListener {
+            val intent = Intent(this@MainActivity, FavouriteActivity::class.java)
+            startActivity(intent)
         }
 
     }

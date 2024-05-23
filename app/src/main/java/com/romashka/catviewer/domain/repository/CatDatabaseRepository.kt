@@ -9,7 +9,7 @@ class CatDatabaseRepository(private val dbRepository: CatDataDao) {
     val allCatData: LiveData<List<CatData>> = dbRepository.getAll()
 
     suspend fun insert(catDataInfo: CatData){
-        dbRepository.insertAll(catDataInfo)
+        dbRepository.insertData(catDataInfo)
     }
 
     suspend fun delete(catDataInfo: CatData){
