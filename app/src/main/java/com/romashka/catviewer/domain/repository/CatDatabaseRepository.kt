@@ -3,6 +3,9 @@ package com.romashka.catviewer.domain.repository
 import androidx.lifecycle.LiveData
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.room.CatDataDao
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 
@@ -14,5 +17,9 @@ class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 
     suspend fun delete(catDataInfo: CatData){
         dbRepository.delete(catDataInfo)
+    }
+
+    fun getAllInfo(): LiveData<List<CatData>> {
+        return dbRepository.getAll()
     }
 }

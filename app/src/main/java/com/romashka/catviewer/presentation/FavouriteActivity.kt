@@ -16,6 +16,7 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByC
     private lateinit var listCatInfo: List<CatData>
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavouriteBinding.inflate(layoutInflater)
@@ -23,11 +24,20 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByC
 
         databaseViewModel = ViewModelProvider(this)[AppDatabaseViewModel::class.java]
 
-        val adapter = CatFavouriteAdapter(arrayListOf(), this)
+        var adapter = CatFavouriteAdapter(arrayListOf(), this)
         binding.recViewFavourite.layoutManager = LinearLayoutManager(this)
         binding.recViewFavourite.adapter = adapter
 
+        databaseViewModel.allInfo.observe(this){newList  ->
+            adapter = CatFavouriteAdapter(newList as ArrayList<CatData>, this)
+
+            TODO()
+        }
+
     }
+
+
+
 
     override fun deleteDataByClickInterface(data: CatData) {
         databaseViewModel.deleteCat(data)
