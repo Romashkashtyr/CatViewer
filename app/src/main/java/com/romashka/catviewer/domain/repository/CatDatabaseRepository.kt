@@ -6,10 +6,11 @@ import com.romashka.catviewer.room.CatDataDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 
-    val allCatData: LiveData<List<CatData>> = dbRepository.getAll()
+    val allCatData: List<CatData> = dbRepository.getAll()
 
     suspend fun insert(catDataInfo: CatData){
         dbRepository.insertData(catDataInfo)
@@ -19,7 +20,7 @@ class CatDatabaseRepository(private val dbRepository: CatDataDao) {
         dbRepository.delete(catDataInfo)
     }
 
-    fun getAllInfo(): LiveData<List<CatData>> {
+    fun getAllInfo(): List<CatData> {
         return dbRepository.getAll()
     }
 }

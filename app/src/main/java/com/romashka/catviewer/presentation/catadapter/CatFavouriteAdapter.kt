@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.FavouriteItemBinding
 import com.romashka.catviewer.domain.model.CatData
 
-class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataByClickInterfaceAdapter: DeleteDataByClickInterface) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
+class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, /*val deleteDataByClickInterfaceAdapter: DeleteDataByClickInterface*/) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
 
 
 
@@ -25,7 +25,7 @@ class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataBy
                 textViewFav.text = items.fact
             }
             itemView.setOnLongClickListener {
-                deleteDataByClickInterfaceAdapter
+                //deleteDataByClickInterfaceAdapter
                 true
             }
         }

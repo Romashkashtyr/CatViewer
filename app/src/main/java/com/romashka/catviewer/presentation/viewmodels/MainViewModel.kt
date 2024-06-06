@@ -24,7 +24,7 @@ class MainViewModel(app: Application, private val getCatsFact: GetCatsFact, priv
  : AndroidViewModel(app) {
 
     private val repository: CatDatabaseRepository
-    private var allInfo: LiveData<List<CatData>>
+    private var allInfo: List<CatData>
 
 
 
