@@ -2,6 +2,7 @@ package com.romashka.catviewer.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent.DispatcherState
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.romashka.catviewer.presentation.catadapter.CatFavouriteAdapter
@@ -13,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class FavouriteActivity : AppCompatActivity() /*CatFavouriteAdapter.DeleteDataByClickInterface*/ {
+class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByClickInterface {
     private lateinit var binding: ActivityFavouriteBinding
 
     private val appDatabase = AppDatabase
@@ -27,17 +28,17 @@ class FavouriteActivity : AppCompatActivity() /*CatFavouriteAdapter.DeleteDataBy
         CoroutineScope(Dispatchers.IO).launch {
             getDatabaseWhole = appDatabase.getDatabase(this@FavouriteActivity).catDao().getAll()
         }
-        var adapter = CatFavouriteAdapter( getDatabaseWhole as ArrayList<CatData> , /*this*/)
+        var adapter = CatFavouriteAdapter( getDatabaseWhole as ArrayList<CatData> , this)
         binding.recViewFavourite.layoutManager = LinearLayoutManager(this)
         binding.recViewFavourite.adapter = adapter
 
     }
 
 
-//    override fun deleteDataByClickInterface(data: CatData) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            repository.delete(data)
-//        }
-//    }
+    override fun deleteDataByClickInterface(data: CatData) {
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.getDatabase(this@FavouriteActivity).catDao().delete(data)
+        }
+    }
 
 }
