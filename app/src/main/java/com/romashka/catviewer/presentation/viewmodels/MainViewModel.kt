@@ -4,8 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.romashka.catviewer.domain.CatFactResponse
 import com.romashka.catviewer.domain.CatImage
 import com.romashka.catviewer.domain.GetCatImage
@@ -20,19 +18,20 @@ import okio.IOException
 import retrofit2.HttpException
 import java.lang.Exception
 
-class MainViewModel(app: Application, private val getCatsFact: GetCatsFact, private val getCatImage: GetCatImage)
+class MainViewModel(private val app: Application, private val getCatsFact: GetCatsFact, private val getCatImage: GetCatImage)
  : AndroidViewModel(app) {
 
-    private val repository: CatDatabaseRepository
-    private var allInfo: List<CatData>
+    private lateinit var repository: CatDatabaseRepository
+    private lateinit var allInfo: List<CatData>
+
 
 
 
     val catHistoryList = mutableListOf<CatData>()
 
-    val _catDataHistory = MutableLiveData<CatData?>()
-    val catDataHistory: LiveData<CatData?>
-        get() = _catDataHistory
+    val _currentCatData = MutableLiveData<CatData?>()
+    val currentCatData: LiveData<CatData?>
+        get() = _currentCatData
 
 
     val _catData = MutableLiveData<CatFactResponse>()
@@ -48,9 +47,20 @@ class MainViewModel(app: Application, private val getCatsFact: GetCatsFact, priv
 
     init {
         nextClickPage()
-        val dao = AppDatabase.getDatabase(app).catDao()
-        repository = CatDatabaseRepository(dao)
-        allInfo = repository.allCatData
+//        val dao = AppDatabase.getDatabase(app).catDao()
+//        repository = CatDatabaseRepository(dao)
+//        CoroutineScope(Dispatchers.IO).launch {
+//            allInfo = repository.allCatData
+//        }
+
+    }
+
+    fun getInfoCatData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val dao = AppDatabase.initDatabase(app).catDao()
+            repository = CatDatabaseRepository(dao)
+            allInfo = repository.allCatData
+        }
     }
 
 
@@ -85,25 +95,25 @@ class MainViewModel(app: Application, private val getCatsFact: GetCatsFact, priv
     private fun updateFactAndImage(){
         val updatedFact = catHistoryList[catIndex].fact
         val updatedImage = catHistoryList[catIndex].url
-        _catDataHistory.postValue(CatData(fact = updatedFact, url = updatedImage))
+        _currentCatData.postValue(CatData(fact = updatedFact, url = updatedImage))
     }
 
     private fun updateCurrentFact(newFact : String){
         val currentData = catHistoryList.lastOrNull()
         currentData?.fact = newFact
-        _catDataHistory.postValue(currentData)
+        _currentCatData.postValue(currentData)
     }
 
     private fun updateCurrentImage(newImage : String){
         val currentImageData = catHistoryList.lastOrNull()
         currentImageData?.url = newImage
-        _catDataHistory.postValue(currentImageData)
+        _currentCatData.postValue(currentImageData)
     }
 
 
     private fun addToHistoryList(newData: CatData) {
         catHistoryList.add(newData)
-        _catDataHistory.postValue(newData)
+        _currentCatData.postValue(newData)
     }
 
 

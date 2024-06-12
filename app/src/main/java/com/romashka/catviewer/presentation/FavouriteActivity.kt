@@ -2,13 +2,10 @@ package com.romashka.catviewer.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.KeyEvent.DispatcherState
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.romashka.catviewer.presentation.catadapter.CatFavouriteAdapter
 import com.romashka.catviewer.databinding.ActivityFavouriteBinding
 import com.romashka.catviewer.domain.model.CatData
-import com.romashka.catviewer.domain.repository.CatDatabaseRepository
 import com.romashka.catviewer.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +15,7 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByC
     private lateinit var binding: ActivityFavouriteBinding
 
     private val appDatabase = AppDatabase
-    private lateinit var getDatabaseWhole: List<CatData>
+    private lateinit var catDataList: List<CatData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +23,9 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByC
         setContentView(binding.root)
 
         CoroutineScope(Dispatchers.IO).launch {
-            getDatabaseWhole = appDatabase.getDatabase(this@FavouriteActivity).catDao().getAll()
+            catDataList = appDatabase.initDatabase(this@FavouriteActivity).catDao().getAll()
         }
-        var adapter = CatFavouriteAdapter( getDatabaseWhole as ArrayList<CatData> , this)
+        val adapter = CatFavouriteAdapter( catDataList as ArrayList<CatData> , this@FavouriteActivity)
         binding.recViewFavourite.layoutManager = LinearLayoutManager(this)
         binding.recViewFavourite.adapter = adapter
 
@@ -37,7 +34,7 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.DeleteDataByC
 
     override fun deleteDataByClickInterface(data: CatData) {
         CoroutineScope(Dispatchers.IO).launch {
-            appDatabase.getDatabase(this@FavouriteActivity).catDao().delete(data)
+            appDatabase.initDatabase(this@FavouriteActivity).catDao().delete(data)
         }
     }
 

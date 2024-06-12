@@ -12,12 +12,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun catDao() : CatDataDao
 
 
-
-
     companion object{
         private var instanse: AppDatabase? = null
 
-        fun getDatabase(context: Context) : AppDatabase{
+        fun initDatabase(context: Context) : AppDatabase{
             return instanse ?: synchronized(this){
                 val catDb = Room.databaseBuilder(
                     context.applicationContext,

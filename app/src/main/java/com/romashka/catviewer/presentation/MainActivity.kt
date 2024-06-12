@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 
 
-        viewModel.catDataHistory.observe(this) { newData ->
+        viewModel.currentCatData.observe(this) { newData ->
             val url = newData?.url
             Glide.with(this)
                 .load(url)
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
                 viewModel.saveData(savedInfo)
                 Toast.makeText(this, "Cat's data successfully saved", Toast.LENGTH_SHORT).show()
             }
+
+            viewModel.getInfoCatData()
         }
 
         binding.buttonNext.setOnClickListener {

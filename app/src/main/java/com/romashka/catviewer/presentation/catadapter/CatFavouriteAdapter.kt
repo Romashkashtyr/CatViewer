@@ -9,9 +9,6 @@ import com.romashka.catviewer.databinding.FavouriteItemBinding
 import com.romashka.catviewer.domain.model.CatData
 
 class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataByClickInterfaceAdapter: DeleteDataByClickInterface) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
-
-
-
     inner class CatFavouriteViewHolder(binding: FavouriteItemBinding ) : RecyclerView.ViewHolder(binding.root) {
         private val imageViewFav = binding.imageSaved
         private val textViewFav = binding.textViewSaved
