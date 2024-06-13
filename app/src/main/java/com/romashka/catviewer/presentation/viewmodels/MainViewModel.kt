@@ -22,7 +22,7 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
  : AndroidViewModel(app) {
 
     private lateinit var repository: CatDatabaseRepository
-    private lateinit var allInfo: List<CatData>
+    private lateinit var allInfo: LiveData<List<CatData>>
 
 
 

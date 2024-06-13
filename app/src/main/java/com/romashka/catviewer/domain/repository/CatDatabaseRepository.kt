@@ -10,7 +10,7 @@ import java.util.ArrayList
 
 class CatDatabaseRepository(private val dbRepository: CatDataDao) {
 
-    val allCatData: List<CatData> = dbRepository.getAll()
+    val allCatData: LiveData<List<CatData>> = dbRepository.getAll()
 
     suspend fun insert(catDataInfo: CatData){
         dbRepository.insertData(catDataInfo)
@@ -20,7 +20,7 @@ class CatDatabaseRepository(private val dbRepository: CatDataDao) {
         dbRepository.delete(catDataInfo)
     }
 
-    fun getAllInfo(): List<CatData> {
+    fun getAllInfo(): LiveData<List<CatData>> {
         return dbRepository.getAll()
     }
 }
