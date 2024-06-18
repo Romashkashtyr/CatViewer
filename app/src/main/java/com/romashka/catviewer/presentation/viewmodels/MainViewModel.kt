@@ -22,9 +22,7 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
  : AndroidViewModel(app) {
 
     private lateinit var repository: CatDatabaseRepository
-    private lateinit var allInfo: LiveData<List<CatData>>
-
-
+    private lateinit var allInfo: List<CatData>
 
 
     val catHistoryList = mutableListOf<CatData>()
@@ -47,18 +45,11 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
 
     init {
         nextClickPage()
-//        val dao = AppDatabase.getDatabase(app).catDao()
-//        repository = CatDatabaseRepository(dao)
-//        CoroutineScope(Dispatchers.IO).launch {
-//            allInfo = repository.allCatData
-//        }
-
     }
 
     fun getInfoCatData() {
         CoroutineScope(Dispatchers.IO).launch {
-            val dao = AppDatabase.initDatabase(app).catDao()
-            repository = CatDatabaseRepository(dao)
+            repository = CatDatabaseRepository()
             allInfo = repository.allCatData
         }
     }
@@ -78,7 +69,6 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
                 updateFactAndImage()
             } else {
                 getCattingFact()
-            //    loadingRandomCatImage()
             }
         }
     }
@@ -98,23 +88,6 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
         _currentCatData.postValue(CatData(fact = updatedFact, url = updatedImage))
     }
 
-    private fun updateCurrentFact(newFact : String){
-        val currentData = catHistoryList.lastOrNull()
-        currentData?.fact = newFact
-        _currentCatData.postValue(currentData)
-    }
-
-    private fun updateCurrentImage(newImage : String){
-        val currentImageData = catHistoryList.lastOrNull()
-        currentImageData?.url = newImage
-        _currentCatData.postValue(currentImageData)
-    }
-
-
-    private fun addToHistoryList(newData: CatData) {
-        catHistoryList.add(newData)
-        _currentCatData.postValue(newData)
-    }
 
 
     private fun getCattingFact() {
@@ -150,19 +123,6 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
             e.message
         }
     }
-
-    fun deleteData(catDataInfo: CatData) {
-        try {
-            CoroutineScope(Dispatchers.IO).launch {
-                repository.delete(catDataInfo)
-            }
-        } catch (e: Exception){
-            e.message
-        }
-    }
-
-
-
 }
 
 

@@ -25,12 +25,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val viewModelFactory = MainViewModelFactory(
-            GetCatsFact(
-                CatRepository(
-                    CatNetwork.catFactApi
-                )
-            ),
-            GetCatImage(CatsRepositoryImage(CatNetwork.catApiImage)), application
+            GetCatsFact(),
+            GetCatImage(), application
         )
         viewModel = ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
 

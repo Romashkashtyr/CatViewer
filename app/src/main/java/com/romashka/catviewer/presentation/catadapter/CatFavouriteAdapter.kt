@@ -2,13 +2,12 @@ package com.romashka.catviewer.presentation.catadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.romashka.catviewer.databinding.FavouriteItemBinding
 import com.romashka.catviewer.domain.model.CatData
 
-class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataByClickInterfaceAdapter: DeleteDataByClickInterface) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
+class CatFavouriteAdapter(val catDataList : MutableList<CatData>, val deleteDataByClickInterfaceAdapter: ItemClickListener) : RecyclerView.Adapter<CatFavouriteAdapter.CatFavouriteViewHolder>() {
     inner class CatFavouriteViewHolder(binding: FavouriteItemBinding ) : RecyclerView.ViewHolder(binding.root) {
         private val imageViewFav = binding.imageSaved
         private val textViewFav = binding.textViewSaved
@@ -45,13 +44,16 @@ class CatFavouriteAdapter(val catDataList : ArrayList<CatData>, val deleteDataBy
 
     private fun updateList(newList: List<CatData>) {
         catDataList.clear()
-
         catDataList.addAll(newList)
-
     }
 
-    interface DeleteDataByClickInterface {
-        fun deleteDataByClickInterface(data: CatData)
+    fun deleteItem(position: Int) {
+        catDataList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    interface ItemClickListener {
+        fun deleteItem(item: CatData, position: Int)
     }
 
 

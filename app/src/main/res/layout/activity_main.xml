@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".presentation.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
         <include
-            android:id="@+id/tv_and_im"
+            android:id="@+id/textview_and_imageview"
             layout="@layout/textview_and_imageview"
             android:layout_width="250dp"
             android:layout_height="250dp"
@@ -26,36 +23,6 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView_add_to_favourite" />
 
 
-
-
-
-<!--        <ImageView-->
-<!--            android:id="@+id/imageView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="150dp"-->
-<!--            app:layout_constraintBottom_toTopOf="@id/textView"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintVertical_bias="0.5"-->
-<!--            app:srcCompat="@drawable/ic_launcher_foreground" />-->
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/textView"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Кошачий факт"-->
-<!--            android:textSize="18sp"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.498"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/imageView"-->
-<!--            app:layout_constraintVertical_bias="0.5" />-->
-
         <LinearLayout
             android:id="@+id/ll_buttons"
             android:layout_width="wrap_content"
@@ -65,7 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_and_im"
+            app:layout_constraintTop_toBottomOf="@+id/textview_and_imageview"
             tools:ignore="MissingConstraints">
 
             <Button
@@ -74,8 +41,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:text="←"
-                android:textSize="36sp"
+                android:text="@string/previous_fact"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/buttonNext"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -88,8 +55,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
-                android:text="→"
-                android:textSize="36sp"
+                android:text="@string/next_fact"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +74,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="45dp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_and_im"
+            app:layout_constraintBottom_toTopOf="@+id/textview_and_imageview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.142"
@@ -118,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginStart="177dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="14dp"
             android:layout_marginEnd="45dp"
             android:text="Сохраненные"
             app:layout_constraintEnd_toStartOf="@+id/imageView_add_to_favourite"
@@ -126,4 +93,3 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

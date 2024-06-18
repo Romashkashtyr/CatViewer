@@ -1,26 +1,30 @@
 package com.romashka.catviewer.presentation.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.romashka.catviewer.domain.model.CatData
-import com.romashka.catviewer.presentation.catadapter.CatFavouriteAdapter
-import com.romashka.catviewer.room.AppDatabase
+import com.romashka.catviewer.domain.repository.CatDatabaseRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavouriteViewModel : ViewModel() {
 
-    val appDatabase = AppDatabase
-    //private lateinit var catDataList: LiveData<List<CatData>>
+    val favouriteListSavedCatData: MutableLiveData<List<CatData>> = MutableLiveData()
+    private val repository = CatDatabaseRepository()
 
-//    fun getFavouriteDataDao(){
-//        CoroutineScope(Dispatchers.IO).launch {
-//            catDataList = appDatabase.initDatabase(application.applicationContext).catDao().getAll()
-//        }
-//    }
+    fun getData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            favouriteListSavedCatData.postValue(repository.getAllInfo())
+        }
+    }
+
+    fun deleteCatData(data: CatData) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.delete(data)
+        }
+
+    }
 
 
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CatViewer</string>
+    <string name="previous_fact">Предыдущий факт</string>
+    <string name="next_fact">Следующий факт</string>
 </resources>

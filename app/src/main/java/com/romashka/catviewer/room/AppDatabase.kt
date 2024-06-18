@@ -13,20 +13,10 @@ abstract class AppDatabase : RoomDatabase() {
 
 
     companion object{
-        private var instanse: AppDatabase? = null
+        lateinit var instanse: AppDatabase
 
-        fun initDatabase(context: Context) : AppDatabase{
-            return instanse ?: synchronized(this){
-                val catDb = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "catListing"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
-                instanse = catDb
-                catDb
-            }
+        fun initDatabase(context: Context) {
+            instanse = Room.databaseBuilder(context, AppDatabase::class.java, "catDb").build()
 
         }
 
