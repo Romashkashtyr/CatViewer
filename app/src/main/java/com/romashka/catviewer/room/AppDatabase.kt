@@ -17,12 +17,8 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun initDatabase(context: Context) {
             instanse = Room.databaseBuilder(context, AppDatabase::class.java, "catDb").build()
-
         }
 
     }
-
-
-
 
 }

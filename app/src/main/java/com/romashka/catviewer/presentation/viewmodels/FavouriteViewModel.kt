@@ -10,8 +10,9 @@ import kotlinx.coroutines.launch
 
 class FavouriteViewModel : ViewModel() {
 
-    val favouriteListSavedCatData: MutableLiveData<List<CatData>> = MutableLiveData()
     private val repository = CatDatabaseRepository()
+    val favouriteListSavedCatData: MutableLiveData<List<CatData>> = MutableLiveData()
+
 
     fun getData() {
         CoroutineScope(Dispatchers.IO).launch {

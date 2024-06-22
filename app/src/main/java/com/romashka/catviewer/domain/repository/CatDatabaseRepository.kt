@@ -1,6 +1,7 @@
 package com.romashka.catviewer.domain.repository
 
 import androidx.lifecycle.LiveData
+import com.romashka.catviewer.CatViewerApp
 import com.romashka.catviewer.domain.model.CatData
 import com.romashka.catviewer.room.AppDatabase
 import com.romashka.catviewer.room.CatDataDao
@@ -9,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 
-class CatDatabaseRepository() {
+class CatDatabaseRepository()  {
 
     private val dbRepository = AppDatabase.instanse.catDao()
 

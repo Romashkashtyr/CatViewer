@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
             val url = newData?.url
             Glide.with(this)
                 .load(url)
-                .into(binding.tvAndIm.imageView)
-            binding.tvAndIm.textView.text = newData?.fact
+                .into(binding.textviewAndImageview.imageView)
+            binding.textviewAndImageview.textView.text = newData?.fact
 
             binding.imageViewAddToFavourite.setOnClickListener {
                 val savedInfo = newData ?: CatData("", "")
