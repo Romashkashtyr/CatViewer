@@ -12,9 +12,10 @@ import java.util.ArrayList
 
 class CatDatabaseRepository()  {
 
+
     private val dbRepository = AppDatabase.instanse.catDao()
 
-    val allCatData: List<CatData> = dbRepository.getAll()
+    //val allCatData: List<CatData> = dbRepository.getAll()
 
     suspend fun insert(catDataInfo: CatData){
         dbRepository.insertData(catDataInfo)
@@ -24,7 +25,7 @@ class CatDatabaseRepository()  {
         dbRepository.delete(catDataInfo)
     }
 
-    fun getAllInfo(): List<CatData> {
+    suspend fun getAllInfo(): List<CatData> {
         return dbRepository.getAll()
     }
 }

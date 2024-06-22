@@ -50,7 +50,7 @@ class MainViewModel(private val app: Application, private val getCatsFact: GetCa
     fun getInfoCatData() {
         CoroutineScope(Dispatchers.IO).launch {
             repository = CatDatabaseRepository()
-            allInfo = repository.allCatData
+            allInfo = repository.getAllInfo()         //allCatData
         }
     }
 

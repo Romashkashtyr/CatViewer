@@ -12,13 +12,13 @@ class CatFavouriteAdapter(val catDataList : MutableList<CatData>, val deleteData
         private val imageViewFav = binding.imageSaved
         private val textViewFav = binding.textViewSaved
 
-        fun bind() {
-            val items = catDataList[adapterPosition]
+        fun bind(catData: CatData) {
+           // val items = catDataList[adapterPosition]
             itemView.apply {
                 Glide.with(context)
-                    .load(items.url)
+                    .load(catData.url)
                     .into(imageViewFav)
-                textViewFav.text = items.fact
+                textViewFav.text = catData.fact
             }
             itemView.setOnLongClickListener {
                 deleteDataByClickInterfaceAdapter
@@ -37,9 +37,8 @@ class CatFavouriteAdapter(val catDataList : MutableList<CatData>, val deleteData
     }
 
     override fun onBindViewHolder(holder: CatFavouriteViewHolder, position: Int) {
-        holder.bind()
-        notifyItemChanged(holder.adapterPosition)
-        updateList(catDataList)
+        holder.bind(catDataList[position])
+
     }
 
     private fun updateList(newList: List<CatData>) {

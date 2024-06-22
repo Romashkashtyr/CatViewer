@@ -11,7 +11,7 @@ import com.romashka.catviewer.domain.model.CatData
 @Dao
 interface CatDataDao {
     @Query("SELECT * FROM catList")
-    fun getAll() : List<CatData>
+    suspend fun getAll() : List<CatData>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(catDataInfo: CatData)
