@@ -41,10 +41,7 @@ class CatFavouriteAdapter(val catDataList : MutableList<CatData>, val deleteData
 
     }
 
-    private fun updateList(newList: List<CatData>) {
-        catDataList.clear()
-        catDataList.addAll(newList)
-    }
+
 
     fun deleteItem(position: Int) {
         catDataList.removeAt(position)

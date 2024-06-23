@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.romashka.catviewer.presentation.catadapter.CatFavouriteAdapter
 import com.romashka.catviewer.databinding.ActivityFavouriteBinding
 import com.romashka.catviewer.domain.model.CatData
@@ -33,7 +34,7 @@ class FavouriteActivity : AppCompatActivity(), CatFavouriteAdapter.ItemClickList
 
         viewModelFavourite.favouriteListSavedCatData.observe(this){
             adapter = CatFavouriteAdapter( it.toMutableList() , this@FavouriteActivity)
-            binding.recViewFavourite.layoutManager = LinearLayoutManager(this)
+            binding.recViewFavourite.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
             binding.recViewFavourite.adapter = adapter
         }
 
